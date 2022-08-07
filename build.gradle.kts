@@ -46,7 +46,10 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutineVersion}")
     testImplementation("io.projectreactor:reactor-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(group = "org.mockito", module = "mockito-core")
+    }
+    testImplementation("com.ninja-squad:springmockk:3.0.1")
     testImplementation("org.hibernate:hibernate-testing:5.2.15.Final")
 }
 
