@@ -3,15 +3,19 @@
   "packageManager": "yarn@3.3.0",
   "scripts": {
     "start": "node dist/server.js",
-    "build": "tsc -p tsconfig.json"
+    "start:watch": "nodemon dist/server.js",
+    "build": "tsc",
+    "build:watch": "tsc -w",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"Build,App\" -c \"yellow.bold,cyan.bold\" \"yarn build:watch\" \"yarn start:watch\" "
   },
-  "main": "server.ts",
   "dependencies": {
     "@prisma/client": "4.7.1",
     "fastify": "^4.10.2"
   },
   "devDependencies": {
     "@types/node": "^18.11.10",
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20",
     "prisma": "4.7.1",
     "typescript": "^4.9.3"
   }
