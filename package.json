@@ -1,0 +1,7 @@
+{
+  "name": "MyBlog",
+  "packageManager": "yarn@3.3.0",
+  "dependencies": {
+    "fastify": "^4.10.2"
+  }
+}
