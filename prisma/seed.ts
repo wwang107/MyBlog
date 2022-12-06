@@ -2,14 +2,6 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-    const category = await prisma.category.create({
-        data: { name: 'category1' }
-    });
-
-    const tags = [
-        { create: { name: 1 }, where: { id: 1 } },
-    ]
-
     const alice = await prisma.user.upsert({
         where: { id: 'alice' },
         update: {},
@@ -37,7 +29,16 @@ async function main() {
                     title: 'This a test title from bob',
                     content: 'This is a test content from bon',
                     published: true,
-                    categoryName: category.name,
+                    category: {
+                        connectOrCreate: {
+                            create: {
+                                name: 'category1'
+                            },
+                            where: {
+                                name: 'category1'
+                            }
+                        }
+                    },
                     tags: {
                         connectOrCreate: {
                             create: {
@@ -52,6 +53,8 @@ async function main() {
             },
         }
     });
+
+    console.log('Seeding database complete', { alice, bob });
 }
 
 main()
