@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { randomUUID } from 'crypto';
 const prisma = new PrismaClient()
 
 async function main() {
@@ -18,6 +19,8 @@ async function main() {
         },
     });
 
+    const commentId = randomUUID();
+
     const bob = await prisma.user.upsert({
         where: { id: 'bob' },
         update: {},
@@ -29,6 +32,17 @@ async function main() {
                     title: 'This a test title from bob',
                     content: 'This is a test content from bon',
                     published: true,
+                    comments: {
+                        connectOrCreate: {
+                            create: {
+                                id: commentId,
+                                comment: 'comment 1'
+                            },
+                            where: {
+                                id: commentId
+                            }
+                        }
+                    },
                     category: {
                         connectOrCreate: {
                             create: {
