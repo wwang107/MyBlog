@@ -6,6 +6,10 @@ async function main() {
         data: { name: 'category1' }
     });
 
+    const tags = [
+        { create: { name: 1 }, where: { id: 1 } },
+    ]
+
     const alice = await prisma.user.upsert({
         where: { id: 'alice' },
         update: {},
@@ -33,20 +37,21 @@ async function main() {
                     title: 'This a test title from bob',
                     content: 'This is a test content from bon',
                     published: true,
-                    categoryName: category.name
-                },
+                    categoryName: category.name,
+                    tags: {
+                        connectOrCreate: {
+                            create: {
+                                name: 'tag1'
+                            },
+                            where: {
+                                name: 'tag1'
+                            }
+                        }
+                    }
+                }
             },
-        },
-    });
-
-
-    const tag = await prisma.tag.create({
-        data: {
-            name: "tag1"
         }
-    })
-
-    console.log({ alice });
+    });
 }
 
 main()
