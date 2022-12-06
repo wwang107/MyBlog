@@ -22,20 +22,32 @@ model Post {
   content      String?
   published    Boolean   @default(false)
   author       User      @relation(fields: [authorId], references: [id])
-  authorId     String
+  authorId     String    @map("author_id")
   category     Category? @relation(fields: [categoryName], references: [name])
   tags         Tag[]
-  categoryName String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  categoryName String?   @map("category_name")
+  comments     Comment[]
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  comment   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Post      Post     @relation(fields: [postId], references: [id])
+  postId    String   @map("post_id")
 }
 
 model Tag {
-  name String @id @unique
-  Post Post[]
+  name      String   @id @unique
+  Post      Post[]
+  createdAt DateTime @default(now()) @map("created_at")
 }
 
 model Category {
-  name String @id @unique
-  Post Post[]
+  name      String   @id @unique
+  Post      Post[]
+  createdAt DateTime @default(now()) @map("created_at")
 }
