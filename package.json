@@ -8,6 +8,9 @@
     "build:watch": "tsc -w",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Build,App\" -c \"yellow.bold,cyan.bold\" \"yarn build:watch\" \"yarn start:watch\" "
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "4.7.1",
     "fastify": "^4.10.2"
@@ -17,6 +20,7 @@
     "concurrently": "^7.6.0",
     "nodemon": "^2.0.20",
     "prisma": "4.7.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.3"
   }
 }
