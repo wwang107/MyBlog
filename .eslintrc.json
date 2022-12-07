@@ -3,7 +3,10 @@
     "plugins": ["@typescript-eslint"],
     "ignorePatterns": ["dist/**/*"],
     "rules": {
-        "indent":["error", 2]
+        "indent":["error", 2],
+        "eol-last": "error",
+        "semi":"error",
+        "comma-dangle":["error", "never"]
     },
     "root": true
 }

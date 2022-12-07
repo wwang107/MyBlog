@@ -1,9 +1,9 @@
 import fastify, { FastifyInstance, FastifyServerOptions } from "fastify";
 
 const build = (options: FastifyServerOptions = {}): FastifyInstance => {
-    const app = fastify(options)
+  const app = fastify(options);
 
-    return app;
-}
+  return app;
+};
 
 export default build;

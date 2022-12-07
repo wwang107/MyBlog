@@ -5,7 +5,9 @@
     "start": "node ./dist/index.js",
     "start:dev": "ts-node --files ./src/index.ts",
     "start:watch": "nodemon",
-    "build": "rm -rf dist && tsc --sourceMap"
+    "build": "rm -rf dist && tsc --sourceMap",
+    "lint": "eslint . --ext ts",
+    "fix": "eslint . --ext ts --fix"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

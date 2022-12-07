@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function main() {
   const alice = await prisma.user.upsert({
@@ -13,10 +13,10 @@ async function main() {
         create: {
           title: 'This a test title from alice',
           content: 'https://www.prisma.io/nextjs',
-          published: true,
-        },
-      },
-    },
+          published: true
+        }
+      }
+    }
   });
 
   const commentId = randomUUID();
@@ -64,7 +64,7 @@ async function main() {
             }
           }
         }
-      },
+      }
     }
   });
 
@@ -73,10 +73,10 @@ async function main() {
 
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
   });
