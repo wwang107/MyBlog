@@ -1,4 +1,3 @@
-import fastify from 'fastify'
 import build from './app/app'
 
 const server = build({ logger: { level: 'info' } });
