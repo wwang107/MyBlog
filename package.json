@@ -2,11 +2,10 @@
   "name": "MyBlog",
   "packageManager": "yarn@3.3.0",
   "scripts": {
-    "start": "node dist/server.js",
-    "start:watch": "nodemon dist/server.js",
-    "build": "tsc",
-    "build:watch": "tsc -w",
-    "dev": "concurrently -k -p \"[{name}]\" -n \"Build,App\" -c \"yellow.bold,cyan.bold\" \"yarn build:watch\" \"yarn start:watch\" "
+    "start": "node ./dist/index.js",
+    "start:dev": "ts-node --files ./src/index.ts",
+    "start:watch": "nodemon",
+    "build": "rm -rf dist && tsc --sourceMap"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
