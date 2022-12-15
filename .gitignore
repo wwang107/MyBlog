@@ -6,7 +6,10 @@
 !.yarn/versions
 
 .pnp.*
+
 node_modules
 dist
+
+prisma/dev.db
 
 .vscode
