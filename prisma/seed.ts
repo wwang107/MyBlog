@@ -1,74 +1,36 @@
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
+import { faker } from '@faker-js/faker';
+const FAKER_SEED = 123;
+faker.seed(FAKER_SEED);
+
 const prisma = new PrismaClient();
 
 async function main() {
-  const alice = await prisma.user.upsert({
-    where: { id: 'alice' },
-    update: {},
-    create: {
-      id: 'alice',
-      name: 'Alice',
-      posts: {
-        create: {
-          title: 'This a test title from alice',
-          content: 'https://www.prisma.io/nextjs',
-          published: true
-        }
-      }
-    }
-  });
-
-  const commentId = randomUUID();
-
-  const bob = await prisma.user.upsert({
-    where: { id: 'bob' },
-    update: {},
-    create: {
-      id: 'bob',
-      name: 'Bob',
-      posts: {
-        create: {
-          title: 'This a test title from bob',
-          content: 'This is a test content from bon',
-          published: true,
-          comments: {
-            connectOrCreate: {
-              create: {
-                id: commentId,
-                comment: 'comment 1'
-              },
-              where: {
-                id: commentId
-              }
-            }
-          },
-          category: {
-            connectOrCreate: {
-              create: {
-                name: 'category1'
-              },
-              where: {
-                name: 'category1'
-              }
-            }
-          },
-          tags: {
-            connectOrCreate: {
-              create: {
-                name: 'tag1'
-              },
-              where: {
-                name: 'tag1'
-              }
-            }
+  const users = [];
+  for (let i = 0; i < 10; i++) {
+    const name = faker.name.firstName();
+    const user = await prisma.user.upsert({
+      where: { id: name },
+      update: {},
+      create: {
+        id: name.toLowerCase(),
+        name: name,
+        posts: {
+          create: {
+            title: faker.lorem.sentence(),
+            content: faker.lorem.paragraphs(),
+            published: true
           }
         }
-      }
-    }
-  });
+      },
+      include: { posts: true }
+    });
 
-  console.log('Seeding database complete', { alice, bob });
+    users.push(user);
+  }
+
+  console.log('Seeding database complete');
 }
 
 main()
