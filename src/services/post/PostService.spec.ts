@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { PostRepository } from "../../database";
-import { EntityNotFound } from "../../errors/errors";
+import { EntityNotFound } from "../../errors";
 import { PostService } from "./PostService";
 
 describe("PostService", () => {
