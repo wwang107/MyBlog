@@ -1,11 +1,11 @@
 import { Post } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { prismaMock } from "./mock/singleton";
-import { PrismaFacade } from "./PrismaFacade";
+import { PrismaPostRepository } from "./PrismaPostRepository";
 
 describe("PrismaFacade", () => {
 
-  const facade = new PrismaFacade(prismaMock);
+  const facade = new PrismaPostRepository(prismaMock);
 
   it("should try connect with the database when init()", async () => {
     await facade.init();

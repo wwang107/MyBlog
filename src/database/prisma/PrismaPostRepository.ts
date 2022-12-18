@@ -1,7 +1,7 @@
 import { Post, PrismaClient } from "@prisma/client";
 import { Page, PostRepository } from "../PostRepository.type";
 
-export class PrismaFacade implements PostRepository {
+export class PrismaPostRepository implements PostRepository {
 
   private prisma!: PrismaClient;
 
@@ -14,8 +14,16 @@ export class PrismaFacade implements PostRepository {
       await this.prisma.$connect();
       return this;
     } catch (error) {
-      throw new Error('db error');
+      throw new Error("db error");
     }
+  }
+
+  async findPost(id: string): Promise<Post | null> {
+    const post = await this.prisma.post.findUnique({
+      where: { id }
+    });
+
+    return post;
   }
 
   public async fetchPosts(limit: number, cursor?: string | undefined): Promise<Page<Post, string>> {
@@ -26,15 +34,15 @@ export class PrismaFacade implements PostRepository {
           id: this.decodeCursor(cursor)
         },
         orderBy: [
-          { createdAt: 'desc' },
-          { id: 'desc' }
+          { createdAt: "desc" },
+          { id: "desc" }
         ]
       })
       : await this.prisma.post.findMany({
         take: limit + 1,
         orderBy: [
-          { createdAt: 'desc' },
-          { id: 'desc' }
+          { createdAt: "desc" },
+          { id: "desc" }
         ]
       });
 
@@ -53,10 +61,10 @@ export class PrismaFacade implements PostRepository {
   }
 
   private encodeCursor(decodedCursor: string): string {
-    return Buffer.from(decodedCursor).toString("base64");
+    return Buffer.from(decodedCursor, "utf-8").toString("base64");
   }
 
   private decodeCursor(encodedCursor: string): string {
-    return Buffer.from(encodedCursor).toString("ascii");
+    return Buffer.from(encodedCursor, "base64").toString("utf-8");
   }
 }
