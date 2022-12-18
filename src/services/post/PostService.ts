@@ -1,5 +1,5 @@
 import { PostRepository } from "../../database";
-import { EntityNotFound } from "../../errors/errors";
+import { PostNotFoundError } from "./errors";
 
 export class PostService {
   private database: PostRepository;
@@ -16,7 +16,7 @@ export class PostService {
     const post = await this.database.findPost(id);
 
     if (!post) {
-      throw new EntityNotFound(`Can not find post id ${id}`);
+      throw new PostNotFoundError(`Can not find post id ${id}`);
     }
 
     return post;

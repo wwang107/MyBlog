@@ -1,1 +1,0 @@
-export { EntityNotFound } from "./errors";

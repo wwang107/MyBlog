@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { PostRepository } from "../../database";
-import { EntityNotFound } from "../../errors";
+import { PostNotFoundError } from "./errors";
 import { PostService } from "./PostService";
 
 describe("PostService", () => {
@@ -28,10 +28,10 @@ describe("PostService", () => {
     expect(post).toStrictEqual(mockPost);
   });
 
-  it("findPost throw EntityNotFound exception when database response with null", async () => {
+  it("findPost throw PostNotFoundError exception when database response with null", async () => {
     mockDB.findPost.mockResolvedValue(null);
     const postId = randomUUID();
 
-    await expect(service.findPost(postId)).rejects.toThrow(EntityNotFound);
+    await expect(service.findPost(postId)).rejects.toThrow(PostNotFoundError);
   });
 });
