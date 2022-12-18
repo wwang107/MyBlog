@@ -1,15 +1,13 @@
-import fastify from 'fastify'
+import build from "./app/app";
 
-const server = fastify()
+const server = build({
+  logger: { level: "info" }
+});
 
-server.get('/ping', async (request, reply) => {
-  return 'psng\n'
-})
-
-server.listen({ port: 8080 }, (err, address) => {
+server.listen({ port: 8080, host: "0.0.0.0" }, (err, address) => {
   if (err) {
-    console.error(err)
-    process.exit(1)
+    console.error(err);
+    process.exit(1);
   }
-  console.log(`Server listening at ${address}`)
-})
+  console.log(`Server listening at ${address}`);
+});
