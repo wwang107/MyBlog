@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { randomUUID } from 'crypto';
-import { faker } from '@faker-js/faker';
+import { PrismaClient } from "@prisma/client";
+import { faker } from "@faker-js/faker";
 const FAKER_SEED = 123;
 faker.seed(FAKER_SEED);
 
@@ -30,7 +29,7 @@ async function main() {
     users.push(user);
   }
 
-  console.log('Seeding database complete');
+  console.log("Seeding database complete");
 }
 
 main()
