@@ -1,20 +1,22 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
-import { getPostQueryParams, getPostsQueryString } from "./schema/postSchemas";
+import { createPostBody, getPostQueryParams, getPostsQueryString } from "./schema/postSchemas";
 import { PostService } from "./PostService";
+import httpStatus from "http-status";
 
 export const createPostRoutes: FastifyPluginAsync = async (app) => {
   const service = new PostService(app.db);
 
   app
     .addSchema(getPostsQueryString)
-    .addSchema(getPostQueryParams);
+    .addSchema(getPostQueryParams)
+    .addSchema(createPostBody);
 
   app.get(
     "/posts",
     {
       schema: {
         querystring: {
-          $ref: "/services/posts/request/querystring"
+          $ref: "/posts/request/get-posts/querystring"
         }
       }
     }
@@ -30,13 +32,33 @@ export const createPostRoutes: FastifyPluginAsync = async (app) => {
     {
       schema: {
         params: {
-          $ref: "/services/posts/request/queryparams"
+          $ref: "/posts/request/get-post/queryparams"
         }
       }
     },
     (req: FastifyRequest<{ Params: { id: string } }>) => {
       const { id } = req.params;
       return service.findPost(id);
+    }
+  );
+
+  app.post(
+    "/posts",
+    {
+      schema: {
+        body: {
+          $ref: "/posts/request/create-post/body"
+        }
+      }
+    },
+    async (
+      req: FastifyRequest<{ Body: { author_id: string, title: string, content: string, tags?: string[] } }>,
+      reply
+    ) => {
+      const { author_id: authorId, title, content, tags = [] } = req.body;
+      const post = await service.createPost(authorId, title, content, tags);
+
+      return reply.code(httpStatus.CREATED).send(post);
     }
   );
 };

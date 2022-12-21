@@ -1,5 +1,5 @@
 import { PostRepository } from "../../database";
-import { PostNotFoundError } from "./errors";
+import { PostNotFoundError, UserNotFoundError } from "../errors";
 
 export class PostService {
   private database: PostRepository;
@@ -20,5 +20,15 @@ export class PostService {
     }
 
     return post;
+  }
+
+  async createPost(authorId: string, title: string, content: string, tags: string[]) {
+    const user = await this.database.findUser(authorId);
+
+    if (!user) {
+      throw new UserNotFoundError(`Can find user id ${authorId}`);
+    }
+
+    return this.database.createPost(authorId, title, content, tags);
   }
 }

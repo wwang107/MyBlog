@@ -1,4 +1,4 @@
-import { Post, PrismaClient } from "@prisma/client";
+import { Post, PrismaClient, User } from "@prisma/client";
 import { Page, PostRepository } from "../PostRepository.type";
 
 export class PrismaPostRepository implements PostRepository {
@@ -58,6 +58,29 @@ export class PrismaPostRepository implements PostRepository {
         limit,
         size: posts.length
       };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async createPost(authorId: string, title: string, content: string, tags: string[]): Promise<Post> {
+    const post = await this.prisma.post.create({
+      data: {
+        authorId,
+        title,
+        content,
+        tags: {
+          connectOrCreate: tags.map(tag => ({
+            where: { name: tag },
+            create: { name: tag }
+          }))
+        }
+      }
+    });
+
+    return post;
+  }
+
+  async findUser(userId: string): Promise<User | null> {
+    return await this.prisma.user.findUnique({ where: { id: userId } });
   }
 
   private encodeCursor(decodedCursor: string): string {

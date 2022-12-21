@@ -1,10 +1,14 @@
 import { randomUUID } from "crypto";
+import { faker } from "@faker-js/faker";
 import { PostRepository } from "../../database";
-import { PostNotFoundError } from "./errors";
+import { PostNotFoundError, UserNotFoundError } from "../errors";
 import { PostService } from "./PostService";
 
 describe("PostService", () => {
-  const mockDB = { findPost: jest.fn() };
+  const mockDB = {
+    findPost: jest.fn(),
+    findUser: jest.fn()
+  };
   const service = new PostService(mockDB as unknown as PostRepository);
 
   beforeEach(() => {
@@ -28,10 +32,24 @@ describe("PostService", () => {
     expect(post).toStrictEqual(mockPost);
   });
 
-  it("findPost throw PostNotFoundError exception when database response with null", async () => {
+  it("findPost throw PostNotFoundError exception when database post not exist", async () => {
     mockDB.findPost.mockResolvedValue(null);
     const postId = randomUUID();
 
     await expect(service.findPost(postId)).rejects.toThrow(PostNotFoundError);
+  });
+
+  it("createPost throw UserNotFoundError exception when author not exist", async () => {
+    mockDB.findUser.mockResolvedValue(null);
+    const authorId = faker.name.firstName().toLowerCase();
+
+    await expect(
+      service.createPost(
+        authorId,
+        "",
+        "",
+        []
+      )
+    ).rejects.toThrow(UserNotFoundError);
   });
 });

@@ -1,5 +1,5 @@
 export const getPostsQueryString = {
-  $id: "/services/posts/request/querystring",
+  $id: "/posts/request/get-posts/querystring",
   type: "object",
   required: ["limit"],
   properties: {
@@ -9,13 +9,28 @@ export const getPostsQueryString = {
 };
 
 export const getPostQueryParams = {
-  $id: "/services/posts/request/queryparams",
+  $id: "/posts/request/get-post/queryparams",
   type: "object",
   required: ["id"],
   properties: {
     id: {
       type: "string",
       format: "uuid"
+    }
+  }
+};
+
+export const createPostBody = {
+  $id: "/posts/request/create-post/body",
+  type: "object",
+  required: ["author_id", "title", "content"],
+  properties: {
+    author_id: { type: "string" },
+    title: { type: "string" },
+    content: { type: "string" },
+    tags: {
+      type: "array",
+      items: { type: "string" }
     }
   }
 };

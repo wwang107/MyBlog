@@ -1,4 +1,4 @@
-import { Post } from "@prisma/client";
+import { Post, User } from "@prisma/client";
 
 export interface PostRepository {
   init(dbClientInstance: any): Promise<PostRepository>
@@ -16,8 +16,27 @@ export interface PostRepository {
   /**
    * Find the post with the given post id
    * @param {string} id post id
+   * 
+   * @returns {Promise<Post | null>} the post with the given id, or null if post id does not exist
    */
   findPost(id: string): Promise<Post | null>
+
+  /**
+   * @param {string} authorId the user who write the post
+   * @param {string} title the title of the post
+   * @param {string[]} tags a list of tags that attach to the post. Empty list if no tags are attach.
+   * @param {string?} content the text content of the post
+   * 
+   * @returns {Promise<Post>} the created post 
+   */
+  createPost(authorId: string, title: string, content: string, tags: string[]): Promise<Post>
+
+  /**
+   * @param {string} userId id of the user
+   * 
+   * @returns {Promise<User>} user with the given id or null if user id does not exist
+   */
+  findUser(userId: string): Promise<User | null>
 }
 
 export interface Page<Data, Cursor> {
