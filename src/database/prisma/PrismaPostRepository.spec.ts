@@ -20,7 +20,6 @@ describe("PrismaFacade", () => {
         title: "1",
         content: "",
         published: true,
-        categoryName: "",
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -30,7 +29,6 @@ describe("PrismaFacade", () => {
         title: "2",
         content: "",
         published: true,
-        categoryName: "",
         createdAt: new Date(),
         updatedAt: new Date()
       }
