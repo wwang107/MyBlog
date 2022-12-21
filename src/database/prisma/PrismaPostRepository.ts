@@ -8,6 +8,9 @@ export class PrismaPostRepository implements PostRepository {
   constructor(prismaInstance: PrismaClient) {
     this.prisma = prismaInstance;
   }
+  async deletePost(postId: string): Promise<Post> {
+    return this.prisma.post.delete({ where: { id: postId } });
+  }
 
   public async init(): Promise<PostRepository> {
     try {

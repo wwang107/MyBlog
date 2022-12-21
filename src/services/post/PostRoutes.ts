@@ -1,5 +1,5 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
-import { createPostBody, getPostQueryParams, getPostsQueryString } from "./schema/postSchemas";
+import { createPostBody, deletePostQueryString, getPostQueryParams, getPostsQueryString } from "./schema/postSchemas";
 import { PostService } from "./PostService";
 import httpStatus from "http-status";
 
@@ -9,7 +9,8 @@ export const createPostRoutes: FastifyPluginAsync = async (app) => {
   app
     .addSchema(getPostsQueryString)
     .addSchema(getPostQueryParams)
-    .addSchema(createPostBody);
+    .addSchema(createPostBody)
+    .addSchema(deletePostQueryString);
 
   app.get(
     "/posts",
@@ -59,6 +60,23 @@ export const createPostRoutes: FastifyPluginAsync = async (app) => {
       const post = await service.createPost(authorId, title, content, tags);
 
       return reply.code(httpStatus.CREATED).send(post);
+    }
+  );
+
+  app.delete(
+    "/posts/:post_id",
+    {
+      schema: {
+        querystring: {
+          $ref: "/posts/request/delete-post/querystring"
+        }
+      }
+    },
+    async (req: FastifyRequest<{ Querystring: { post_id: string } }>, reply) => {
+      const { post_id: postId } = req.query;
+      await service.deletePost(postId);
+
+      return reply.code(httpStatus.OK).send();
     }
   );
 };
