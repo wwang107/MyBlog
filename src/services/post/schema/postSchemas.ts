@@ -34,3 +34,8 @@ export const createPostBody = {
     }
   }
 };
+
+export const deletePostQueryString = {
+  $id: "/posts/request/delete-post/querystring",
+  type: "string"
+};
