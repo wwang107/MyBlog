@@ -61,4 +61,21 @@ export const createPostRoutes: FastifyPluginAsync = async (app) => {
       return reply.code(httpStatus.CREATED).send(post);
     }
   );
+
+  app.delete(
+    "/posts/:post_id",
+    {
+      schema: {
+        querystring: {
+          type: "string"
+        }
+      }
+    },
+    async (req: FastifyRequest<{ Querystring: { post_id: string } }>, reply) => {
+      const { post_id: postId } = req.query;
+      await service.deletePost(postId);
+
+      return reply.code(httpStatus.OK).send();
+    }
+  );
 };

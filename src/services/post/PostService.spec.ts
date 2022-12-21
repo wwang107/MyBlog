@@ -7,7 +7,8 @@ import { PostService } from "./PostService";
 describe("PostService", () => {
   const mockDB = {
     findPost: jest.fn(),
-    findAuthor: jest.fn()
+    findAuthor: jest.fn(),
+    deletePost: jest.fn()
   };
   const service = new PostService(mockDB as unknown as PostRepository);
 
@@ -51,5 +52,10 @@ describe("PostService", () => {
         []
       )
     ).rejects.toThrow(AuthorNotFoundError);
+  });
+
+  it("deletePost throw PostNotFoundError exception when post not exist", async () => {
+    mockDB.deletePost.mockResolvedValue(null);
+    await expect(service.deletePost(randomUUID())).rejects.toThrow(PostNotFoundError);
   });
 });

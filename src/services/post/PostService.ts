@@ -26,9 +26,19 @@ export class PostService {
     const user = await this.database.findAuthor(authorId);
 
     if (!user) {
-      throw new AuthorNotFoundError(`Can find user id ${authorId}`);
+      throw new AuthorNotFoundError(`Can not find user id ${authorId}`);
     }
 
     return this.database.createPost(authorId, title, content, tags);
+  }
+
+  async deletePost(postId: string) {
+    const post = await this.database.deletePost(postId);
+
+    if (!post) {
+      throw new PostNotFoundError(`Post id ${postId} can not be deleted because it does not exist`);
+    }
+
+    return post;
   }
 }

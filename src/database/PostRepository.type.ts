@@ -28,6 +28,7 @@ export interface PostRepository {
    * @param {string?} content the text content of the post
    * 
    * @returns {Promise<Post>} the created post 
+   * @throws {AuthorNotFoundError} throw if author id does not exist
    */
   createPost(authorId: string, title: string, content: string, tags: string[]): Promise<Post>
 
@@ -37,6 +38,15 @@ export interface PostRepository {
    * @returns {Promise<User>} user with the given id or null if user id does not exist
    */
   findAuthor(authorId: string): Promise<Author | null>
+
+  /**
+   * Delete a post
+   * 
+   * @param {string} postId id of the post that need to be deleted
+   * 
+   * @throw {PostNotFoundError} throw if the post does not exist  
+   */
+  deletePost(postId: string): Promise<Post>
 }
 
 export interface Page<Data, Cursor> {
