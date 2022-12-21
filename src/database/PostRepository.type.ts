@@ -22,6 +22,8 @@ export interface PostRepository {
   findPost(id: string): Promise<Post | null>
 
   /**
+   * create a post
+   * 
    * @param {string} authorId the user who write the post
    * @param {string} title the title of the post
    * @param {string[]} tags a list of tags that attach to the post. Empty list if no tags are attach.
