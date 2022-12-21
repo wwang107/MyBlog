@@ -10,7 +10,7 @@ export class PostNotFoundError extends EntityNotFoundError {
   }
 }
 
-export class UserNotFoundError extends EntityNotFoundError {
+export class AuthorNotFoundError extends EntityNotFoundError {
   constructor(message: string) {
     super(message);
   }

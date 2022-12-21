@@ -1,13 +1,13 @@
 import { randomUUID } from "crypto";
 import { faker } from "@faker-js/faker";
 import { PostRepository } from "../../database";
-import { PostNotFoundError, UserNotFoundError } from "../errors";
+import { AuthorNotFoundError, PostNotFoundError } from "../errors";
 import { PostService } from "./PostService";
 
 describe("PostService", () => {
   const mockDB = {
     findPost: jest.fn(),
-    findUser: jest.fn()
+    findAuthor: jest.fn()
   };
   const service = new PostService(mockDB as unknown as PostRepository);
 
@@ -39,8 +39,8 @@ describe("PostService", () => {
     await expect(service.findPost(postId)).rejects.toThrow(PostNotFoundError);
   });
 
-  it("createPost throw UserNotFoundError exception when author not exist", async () => {
-    mockDB.findUser.mockResolvedValue(null);
+  it("createPost throw AuthorNotFoundError exception when author not exist", async () => {
+    mockDB.findAuthor.mockResolvedValue(null);
     const authorId = faker.name.firstName().toLowerCase();
 
     await expect(
@@ -50,6 +50,6 @@ describe("PostService", () => {
         "",
         []
       )
-    ).rejects.toThrow(UserNotFoundError);
+    ).rejects.toThrow(AuthorNotFoundError);
   });
 });

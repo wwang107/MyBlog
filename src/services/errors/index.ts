@@ -1,1 +1,1 @@
-export { PostNotFoundError, UserNotFoundError } from "./errors";
+export { PostNotFoundError, AuthorNotFoundError } from "./errors";

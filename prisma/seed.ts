@@ -6,10 +6,10 @@ faker.seed(FAKER_SEED);
 const prisma = new PrismaClient();
 
 async function main() {
-  const users = [];
+  const authors = [];
   for (let i = 0; i < 10; i++) {
     const name = faker.name.firstName();
-    const user = await prisma.user.upsert({
+    const author = await prisma.author.upsert({
       where: { id: name },
       update: {},
       create: {
@@ -26,7 +26,7 @@ async function main() {
       include: { posts: true }
     });
 
-    users.push(user);
+    authors.push(author);
   }
 
   console.log("Seeding database complete");

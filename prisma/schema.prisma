@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Author {
   id    String  @id @unique
   name  String?
   posts Post[]
@@ -21,7 +21,7 @@ model Post {
   title     String
   content   String
   published Boolean   @default(false)
-  author    User      @relation(fields: [authorId], references: [id])
+  author    Author    @relation(fields: [authorId], references: [id])
   authorId  String    @map("author_id")
   tags      Tag[]
   comments  Comment[]

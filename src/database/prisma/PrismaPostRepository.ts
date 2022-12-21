@@ -1,4 +1,4 @@
-import { Post, PrismaClient, User } from "@prisma/client";
+import { Post, PrismaClient, Author } from "@prisma/client";
 import { Page, PostRepository } from "../PostRepository.type";
 
 export class PrismaPostRepository implements PostRepository {
@@ -79,8 +79,8 @@ export class PrismaPostRepository implements PostRepository {
     return post;
   }
 
-  async findUser(userId: string): Promise<User | null> {
-    return await this.prisma.user.findUnique({ where: { id: userId } });
+  async findAuthor(userId: string): Promise<Author | null> {
+    return await this.prisma.author.findUnique({ where: { id: userId } });
   }
 
   private encodeCursor(decodedCursor: string): string {
