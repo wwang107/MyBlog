@@ -46,6 +46,7 @@ export interface PostRepository {
    * 
    * @param {string} postId id of the post that need to be deleted
    * 
+   * @returns {Post} the deleted post
    * @throw {PostNotFoundError} throw if the post does not exist  
    */
   deletePost(postId: string): Promise<Post>
