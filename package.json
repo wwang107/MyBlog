@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node ./dist/server.js",
     "start:dev": "ts-node --files ./src/server.ts",
-    "start:watch": "nodemon",
+    "start:watch": "nodemon -w src -e ts -i '*.spec.ts' src/server.ts",
     "test": "jest",
     "build": "rm -rf dist && tsc --sourceMap",
     "lint": "eslint . --ext ts",
