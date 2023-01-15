@@ -41,4 +41,9 @@ export class PostService {
 
     return post;
   }
+
+  async addComment(postId: string, comment: string) {
+    const post = await this.findPost(postId);
+    return this.database.createComment(post.id, comment);
+  }
 }

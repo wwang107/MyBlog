@@ -1,4 +1,4 @@
-import { Post, PrismaClient, Author } from "@prisma/client";
+import { Post, PrismaClient, Author, Comment } from "@prisma/client";
 import { Page, PostRepository } from "../PostRepository.type";
 
 export class PrismaPostRepository implements PostRepository {
@@ -8,9 +8,6 @@ export class PrismaPostRepository implements PostRepository {
   constructor(prismaInstance: PrismaClient) {
     this.prisma = prismaInstance;
   }
-  async deletePost(postId: string): Promise<Post> {
-    return this.prisma.post.delete({ where: { id: postId } });
-  }
 
   public async init(): Promise<PostRepository> {
     try {
@@ -19,6 +16,10 @@ export class PrismaPostRepository implements PostRepository {
     } catch (error) {
       throw new Error("db error");
     }
+  }
+
+  async deletePost(postId: string): Promise<Post> {
+    return this.prisma.post.delete({ where: { id: postId } });
   }
 
   async findPost(id: string): Promise<Post | null> {
@@ -84,6 +85,15 @@ export class PrismaPostRepository implements PostRepository {
 
   async findAuthor(userId: string): Promise<Author | null> {
     return await this.prisma.author.findUnique({ where: { id: userId } });
+  }
+
+  createComment(postId: string, comment: string): Promise<Comment> {
+    return this.prisma.comment.create({
+      data: {
+        postId,
+        comment
+      }
+    });
   }
 
   private encodeCursor(decodedCursor: string): string {
