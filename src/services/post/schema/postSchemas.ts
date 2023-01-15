@@ -39,3 +39,24 @@ export const deletePostQueryString = {
   $id: "/posts/request/delete-post/querystring",
   type: "string"
 };
+
+export const createCommentQueryParams = {
+  $id: "/comments/request/create-comment/queryparams",
+  type: "object",
+  required: ["post_id"],
+  properties: {
+    id: {
+      type: "string",
+      format: "uuid"
+    }
+  }
+};
+
+export const createCommentBody = {
+  $id: "/comments/request/create-comment/body",
+  type: "object",
+  required: ["comment"],
+  properties: {
+    comment: { type: "string" }
+  }
+};

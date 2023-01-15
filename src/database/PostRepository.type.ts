@@ -1,4 +1,4 @@
-import { Post, Author } from "@prisma/client";
+import { Post, Author, Comment } from "@prisma/client";
 
 export interface PostRepository {
   init(dbClientInstance: any): Promise<PostRepository>
@@ -50,6 +50,14 @@ export interface PostRepository {
    * @throw {PostNotFoundError} throw if the post does not exist  
    */
   deletePost(postId: string): Promise<Post>
+
+  /**
+   * Create a comment for a specific post
+   * 
+   * @param {string} postId
+   * @param {string} comment
+   */
+  createComment(postId: string, comment: string): Promise<Comment>
 }
 
 export interface Page<Data, Cursor> {

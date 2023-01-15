@@ -1,5 +1,12 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
-import { createPostBody, deletePostQueryString, getPostQueryParams, getPostsQueryString } from "./schema/postSchemas";
+import {
+  createCommentBody,
+  createCommentQueryParams,
+  createPostBody,
+  deletePostQueryString,
+  getPostQueryParams,
+  getPostsQueryString
+} from "./schema/postSchemas";
 import { PostService } from "./PostService";
 import httpStatus from "http-status";
 
@@ -10,7 +17,9 @@ export const createPostRoutes: FastifyPluginAsync = async (app) => {
     .addSchema(getPostsQueryString)
     .addSchema(getPostQueryParams)
     .addSchema(createPostBody)
-    .addSchema(deletePostQueryString);
+    .addSchema(deletePostQueryString)
+    .addSchema(createCommentQueryParams)
+    .addSchema(createCommentBody);
 
   app.get(
     "/posts",
@@ -77,6 +86,23 @@ export const createPostRoutes: FastifyPluginAsync = async (app) => {
       await service.deletePost(postId);
 
       return reply.code(httpStatus.OK).send();
+    }
+  );
+
+  app.post(
+    "/posts/:post_id/comments",
+    {
+      schema: {
+        params: { $ref: "/comments/request/create-comment/queryparams" },
+        body: { $ref: "/comments/request/create-comment/body" }
+      }
+    },
+    async (req: FastifyRequest<{ Params: { post_id: string }, Body: { comment: string } }>, reply) => {
+      const { post_id: postId } = req.params;
+      const { comment } = req.body;
+      const createdComment = await service.addComment(postId, comment);
+
+      return reply.code(httpStatus.OK).send(createdComment);
     }
   );
 };
