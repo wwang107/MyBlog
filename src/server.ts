@@ -1,7 +1,20 @@
 import build from "./app/app";
 
+const envToLogger: { [environment: string]: any } = {
+  development: {
+    transport: {
+      target: "pino-pretty",
+      options: {
+        translateTime: "HH:MM:ss Z",
+        ignore: "pid,hostname"
+      }
+    }
+  },
+  production: true
+};
+
 const server = build({
-  logger: { level: "info" }
+  logger: envToLogger[process.env.NODE_ENV as string] ?? true
 });
 
 server.listen({ port: 8080, host: "0.0.0.0" }, (err, address) => {
